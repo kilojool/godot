@@ -2046,6 +2046,7 @@ bool Main::iteration() {
 	float frame_slice = 1.0 / physics_fps;
 
 	float time_scale = Engine::get_singleton()->get_time_scale();
+	float physics_time_scale = Engine::get_singleton()->get_physics_time_scale();
 
 	MainFrameTime advance = main_timer_sync.advance(frame_slice, physics_fps);
 	double step = advance.idle_step;
@@ -2081,17 +2082,17 @@ bool Main::iteration() {
 		Physics2DServer::get_singleton()->sync();
 		Physics2DServer::get_singleton()->flush_queries();
 
-		if (OS::get_singleton()->get_main_loop()->iteration(frame_slice * time_scale)) {
+		if (OS::get_singleton()->get_main_loop()->iteration(frame_slice * physics_time_scale)) {
 			exit = true;
 			break;
 		}
 
 		message_queue->flush();
 
-		PhysicsServer::get_singleton()->step(frame_slice * time_scale);
+		PhysicsServer::get_singleton()->step(frame_slice * physics_time_scale);
 
 		Physics2DServer::get_singleton()->end_sync();
-		Physics2DServer::get_singleton()->step(frame_slice * time_scale);
+		Physics2DServer::get_singleton()->step(frame_slice * physics_time_scale);
 
 		message_queue->flush();
 
