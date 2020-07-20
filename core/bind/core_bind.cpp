@@ -3108,6 +3108,14 @@ float _Engine::get_time_scale() {
 	return Engine::get_singleton()->get_time_scale();
 }
 
+void _Engine::set_physics_time_scale(float p_scale) {
+	Engine::get_singleton()->set_physics_time_scale(p_scale);
+}
+
+float _Engine::get_physics_time_scale() {
+	return Engine::get_singleton()->get_physics_time_scale();
+}
+
 int _Engine::get_frames_drawn() {
 
 	return Engine::get_singleton()->get_frames_drawn();
@@ -3181,6 +3189,9 @@ void _Engine::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_time_scale", "time_scale"), &_Engine::set_time_scale);
 	ClassDB::bind_method(D_METHOD("get_time_scale"), &_Engine::get_time_scale);
 
+	ClassDB::bind_method(D_METHOD("set_physics_time_scale", "time_scale"), &_Engine::set_physics_time_scale);
+	ClassDB::bind_method(D_METHOD("get_physics_time_scale"), &_Engine::get_physics_time_scale);
+
 	ClassDB::bind_method(D_METHOD("get_frames_drawn"), &_Engine::get_frames_drawn);
 	ClassDB::bind_method(D_METHOD("get_frames_per_second"), &_Engine::get_frames_per_second);
 	ClassDB::bind_method(D_METHOD("get_physics_frames"), &_Engine::get_physics_frames);
@@ -3207,6 +3218,7 @@ void _Engine::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "iterations_per_second"), "set_iterations_per_second", "get_iterations_per_second");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "target_fps"), "set_target_fps", "get_target_fps");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time_scale"), "set_time_scale", "get_time_scale");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "physics_time_scale"), "set_physics_time_scale", "get_physics_time_scale");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "physics_jitter_fix"), "set_physics_jitter_fix", "get_physics_jitter_fix");
 }
 
