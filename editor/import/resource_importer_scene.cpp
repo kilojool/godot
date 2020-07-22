@@ -276,13 +276,17 @@ static String _fixstr(const String &p_what, const String &p_str) {
 	return what;
 }
 
-static void _gen_shape_list(const Ref<Mesh> &mesh, List<Ref<Shape> > &r_shape_list, bool p_convex) {
+static void _gen_shape_list(const Ref<Mesh> &mesh, List<Ref<Shape> > &r_shape_list, bool p_convex, bool single = false) {
 
 	if (!p_convex) {
 
 		Ref<Shape> shape = mesh->create_trimesh_shape();
 		r_shape_list.push_back(shape);
-	} else {
+	} else if (single) {
+		Ref<Shape> shape = mesh->create_convex_shape();
+		r_shape_list.push_back(shape);
+	}
+	else {
 
 		Vector<Ref<Shape> > cd = mesh->convex_decompose();
 		if (cd.size()) {
@@ -373,7 +377,7 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mesh>
 		}
 	}
 
-	if (_teststr(name, "colonly") || _teststr(name, "convcolonly")) {
+	if (_teststr(name, "colonly") || _teststr(name, "convcolonly") || _teststr(name, "singleconvcolonly")) {
 
 		if (isroot)
 			return p_node;
@@ -392,12 +396,17 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mesh>
 				} else if (_teststr(name, "convcolonly")) {
 					_gen_shape_list(mesh, shapes, true);
 					collision_map[mesh] = shapes;
+				} else if (_teststr(name, "singleconvcolonly")) {
+					_gen_shape_list(mesh, shapes, true, true);
+					collision_map[mesh] = shapes;
 				}
 
 				if (_teststr(name, "colonly")) {
 					fixed_name = _fixstr(name, "colonly");
 				} else if (_teststr(name, "convcolonly")) {
 					fixed_name = _fixstr(name, "convcolonly");
+				} else if (_teststr(name, "singleconvcolonly")) {
+					fixed_name = _fixstr(name, "singleconvcolonly");
 				}
 
 				ERR_FAIL_COND_V(fixed_name == String(), NULL);
@@ -498,7 +507,7 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mesh>
 			}
 		}
 
-	} else if ((_teststr(name, "col") || (_teststr(name, "convcol"))) && Object::cast_to<MeshInstance>(p_node)) {
+	} else if ((_teststr(name, "col") || _teststr(name, "convcol") ||  _teststr(name, "singleconvcol")) && Object::cast_to<MeshInstance>(p_node)) {
 
 		MeshInstance *mi = Object::cast_to<MeshInstance>(p_node);
 
@@ -515,12 +524,17 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mesh>
 			} else if (_teststr(name, "convcol")) {
 				_gen_shape_list(mesh, shapes, true);
 				collision_map[mesh] = shapes;
+			} else if (_teststr(name, "singleconvcol")) {
+				_gen_shape_list(mesh, shapes, true, true);
+				collision_map[mesh] = shapes;
 			}
 
 			if (_teststr(name, "col")) {
 				fixed_name = _fixstr(name, "col");
 			} else if (_teststr(name, "convcol")) {
 				fixed_name = _fixstr(name, "convcol");
+			} else if (_teststr(name, "singleconvcol")) {
+				fixed_name = _fixstr(name, "singleconvcol");
 			}
 
 			if (fixed_name != String()) {
@@ -629,7 +643,11 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mesh>
 				_gen_shape_list(mesh, shapes, true);
 				collision_map[mesh] = shapes;
 				mesh->set_name(_fixstr(mesh->get_name(), "convcol"));
-			}
+			} else if (_teststr(mesh->get_name(), "singleconvcol")) {
+				_gen_shape_list(mesh, shapes, true, true);
+				collision_map[mesh] = shapes;
+				mesh->set_name(_fixstr(mesh->get_name(), "singleconvcol"));
+			} 
 
 			if (shapes.size()) {
 				StaticBody *col = memnew(StaticBody);
