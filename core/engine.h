@@ -60,6 +60,7 @@ private:
 	float _fps = 1;
 	int _target_fps = 0;
 	float _time_scale = 1.0;
+	float _physics_time_scale = 1.0;
 	bool _pixel_snap = false;
 	uint64_t _physics_frames = 0;
 	float _physics_interpolation_fraction = 0.0f;
@@ -100,6 +101,9 @@ public:
 
 	void set_time_scale(float p_scale);
 	float get_time_scale() const;
+
+	void set_physics_time_scale(float p_scale);
+	float get_physics_time_scale() const;
 
 	void set_frame_delay(uint32_t p_msec);
 	uint32_t get_frame_delay() const;
