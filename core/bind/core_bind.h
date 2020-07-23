@@ -647,6 +647,9 @@ public:
 	void set_time_scale(float p_scale);
 	float get_time_scale();
 
+	void set_physics_time_scale(float p_scale);
+	float get_physics_time_scale();
+
 	MainLoop *get_main_loop() const;
 
 	Dictionary get_version_info() const;
