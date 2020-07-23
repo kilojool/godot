@@ -2298,6 +2298,14 @@ float _Engine::get_time_scale() {
 	return Engine::get_singleton()->get_time_scale();
 }
 
+void _Engine::set_physics_time_scale(float p_scale) {
+	Engine::get_singleton()->set_physics_time_scale(p_scale);
+}
+
+float _Engine::get_physics_time_scale() {
+	return Engine::get_singleton()->get_physics_time_scale();
+}
+
 int _Engine::get_frames_drawn() {
 	return Engine::get_singleton()->get_frames_drawn();
 }
