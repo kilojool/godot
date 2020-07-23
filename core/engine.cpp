@@ -84,6 +84,14 @@ float Engine::get_time_scale() const {
 	return _time_scale;
 }
 
+void Engine::set_physics_time_scale(float p_scale) {
+	_physics_time_scale = p_scale;
+}
+
+float Engine::get_physics_time_scale() const {
+	return _physics_time_scale;
+}
+
 Dictionary Engine::get_version_info() const {
 	Dictionary dict;
 	dict["major"] = VERSION_MAJOR;
