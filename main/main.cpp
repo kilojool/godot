@@ -2116,11 +2116,11 @@ bool Main::iteration() {
 
 		if ((!force_redraw_requested) && OS::get_singleton()->is_in_low_processor_usage_mode()) {
 			if (VisualServer::get_singleton()->has_changed()) {
-				VisualServer::get_singleton()->draw(true, scaled_step); // flush visual commands
+				VisualServer::get_singleton()->draw(true, step * physics_time_scale); // flush visual commands
 				Engine::get_singleton()->frames_drawn++;
 			}
 		} else {
-			VisualServer::get_singleton()->draw(true, scaled_step); // flush visual commands
+			VisualServer::get_singleton()->draw(true, step * physics_time_scale); // flush visual commands
 			Engine::get_singleton()->frames_drawn++;
 			force_redraw_requested = false;
 		}

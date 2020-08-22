@@ -196,10 +196,10 @@ void RasterizerGLES3::begin_frame(double frame_step) {
 
 	time_total += frame_step * time_scale;
 
-	if (frame_step == 0) {
-		//to avoid hiccups
-		frame_step = 0.001;
-	}
+	// if (frame_step == 0) {
+	// 	//to avoid hiccups
+	// 	frame_step = 0.001;
+	// }
 
 	double time_roll_over = GLOBAL_GET("rendering/limits/time/time_rollover_secs");
 	time_total = Math::fmod(time_total, time_roll_over);
