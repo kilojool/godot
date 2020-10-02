@@ -460,7 +460,7 @@ void Control::remove_child_notify(Node *p_child) {
 
 void Control::_update_canvas_item_transform() {
 	Transform2D xform = _get_internal_transform();
-	xform[2] += get_position();
+	xform[2] += get_position() - get_pivot_offset();
 
 	RenderingServer::get_singleton()->canvas_item_set_transform(get_canvas_item(), xform);
 }
@@ -1597,7 +1597,7 @@ Size2 Control::get_end() const {
 }
 
 Point2 Control::get_global_position() const {
-	return get_global_transform().get_origin();
+	return get_global_transform().get_origin() - get_pivot_offset();
 }
 
 Point2 Control::get_screen_position() const {
@@ -2151,7 +2151,7 @@ Control::CursorShape Control::get_cursor_shape(const Point2 &p_pos) const {
 
 Transform2D Control::get_transform() const {
 	Transform2D xform = _get_internal_transform();
-	xform[2] += get_position();
+	xform[2] += get_position() - get_pivot_offset();
 	return xform;
 }
 
